@@ -1,0 +1,8 @@
+<p>
+{% extends "movierating/base.html" %}
+
+{% block content %}
+  <p>Test Project helps you choose movie or serial.</p>
+
+  <a href="{% url 'movierating:new_request' %}">Make a new movie request</a>
+{% endblock content %}

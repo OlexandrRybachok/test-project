@@ -1,0 +1,12 @@
+{% extends "movierating/base.html" %}
+
+{% block content %}
+  <p>Make new movie request:</p>
+
+  <form action="{% url 'movierating:new_request' %}" method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Make request</button>
+  </form>
+
+{% endblock content %}
