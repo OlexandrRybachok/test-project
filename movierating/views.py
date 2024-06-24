@@ -1,25 +1,25 @@
-import requests
-from django.shortcuts import render, redirect
-
-# from .models import Movie
-from .forms import MovieForm
+import requests, json
+from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import Movie
 
 def index(request):
-    """The home page for Test Project."""
-    return render(request, 'movierating/index.html')
+    """Домашня сторінка Test Project."""
+    return render(request, 'movierating/index.html', {
+        'form': Movie(), 
+        'title': new_request,
+        })
 
 def new_request(request):
-    """Show fields for input."""
-    if request.method != 'POST':
-        form = f'http://www.omdbapi.com/?t={MovieForm()}&apikey=36cd6ae'
-    else:
-        form = f'http://www.omdbapi.com/?t={MovieForm(data=request.POST)}&apikey=36cd6ae'
+    """Створит поле для вводу і відобразити отримані результати."""
+    if request.method == 'POST':
+        form = Movie(requests.POST)
         if form.is_valid():
-            form.save()
-            return redirect('movierating:new_request')
+            title = form.cleaned_data["title"]
+            data = requests.get(f'http://www.omdbapi.com/?t={title}&apikey=36cd6ae')
+            moviedata = data.json()
+            return HttpResponse(moviedata)
+    else:
+        form = Movie()
 
-        # r = requests.get(f'https://http://127.0.0.1:8000/{url}/save', params=request.GET)
-
-    # Display a blank or invalid form.
-    context = {'form': form}
-    return render(request, 'movierating/new_request.html', context)
+    return render(request, 'movierating/index.html', {"form": form})

@@ -1,4 +1,4 @@
-"""Defines URL patterns for movierating."""
+"""Визначити URL шаблони для movierating."""
 from django.urls import path
 
 from . import views
@@ -6,7 +6,7 @@ from . import views
 app_name = 'movierating'
 urlpatterns = [
     #Home page
-    path('', views.index, name='index'),
+    path('', views.index, name=''),
     #Page that makes API call.
-    path('new_request/', views.new_request, name='new_request'),
+    path('', views.new_request, name=''),
 ]

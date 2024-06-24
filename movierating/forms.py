@@ -1,9 +1,4 @@
 from django import forms
 
-from .models import Movie
-
-class MovieForm(forms.ModelForm):
-    class Meta:
-        model = Movie
-        fields = ['title']
-        labels = {'title': ''}
+class Movie(forms.Form):
+    title = forms.CharField(label="Title", max_length=200)
