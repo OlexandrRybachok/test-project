@@ -1,13 +1,7 @@
 <!DOCTYPE html>
-<head>
-  <title>Test Project</title>
-</head>
+<p>
+  <a href="{% url 'movierating:index' %}">Test Project</a> - 
+  <a href="{% url 'movierating:new_request' %}">Result</a>
+</p>
 
-<body>
-  <div>
-    {% block content %}
-    {% endblock content %}
-  </div>
-</body>
-
-</html>
+{% block content %}{% endblock content %}

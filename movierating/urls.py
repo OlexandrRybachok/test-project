@@ -6,7 +6,7 @@ from . import views
 app_name = 'movierating'
 urlpatterns = [
     #Home page
-    path('', views.index, name=''),
-    #Page that makes API call.
-    path('', views.new_request, name=''),
+    path('', views.index, name='index'),
+    #Page where you make requests
+    path('new_request/', views.new_request, name='new_request'),
 ]
