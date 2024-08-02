@@ -1,5 +1,6 @@
 import requests, json
 from django.shortcuts import render
+from .forms import Movie
 
 def index(request):
     """Домашня сторінка Test Project."""
@@ -7,10 +8,10 @@ def index(request):
 
 def new_request(request):
     """Відобразити отримані результати."""
-    response = requests.get(f'https://www.omdbapi.com/?r=json&t=batman&apikey=36cd6ae').json()
-    with open(f'filename.json', 'w') as f:
-        json.dump(response, f)
-    with open (f'filename.json') as f:
-        results = json.load(f)
-    context = {'results': results}
+    response = requests.get(f'https://www.omdbapi.com/?r=json&t=rick_and_morty&apikey=36cd6ae').json()
+    # with open(f'filename.json', 'w') as f:
+    #     json.dump(response, f)
+    # with open (f'filename.json') as f:
+    #     results = json.load(f)
+    context = {'response': response}
     return render(request, 'movierating/new_request.html', context)
