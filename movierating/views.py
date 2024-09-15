@@ -1,17 +1,29 @@
 import requests, json
-from django.shortcuts import render
-from .forms import Movie
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from .forms import MovieForm
 
 def index(request):
     """Домашня сторінка Test Project."""
     return render(request, 'movierating/index.html')
 
 def new_request(request):
-    """Відобразити отримані результати."""
-    response = requests.get(f'https://www.omdbapi.com/?r=json&t=rick_and_morty&apikey=36cd6ae').json()
-    # with open(f'filename.json', 'w') as f:
-    #     json.dump(response, f)
-    # with open (f'filename.json') as f:
-    #     results = json.load(f)
-    context = {'response': response}
+    """Відображення форми для здійснення запиту."""
+    if request.method == 'POST':
+        form = MovieForm(data=request.POST)
+        data = form['title'].value()
+        response = requests.get(f'https://www.omdbapi.com/?r=json&s={data}&apikey=36cd6ae').json()
+        with open(f'filename.json', 'w') as f:
+            json.dump(response, f)
+        return redirect('movierating:results')
+    else:
+        form = MovieForm()
+    context = {'form': form}
     return render(request, 'movierating/new_request.html', context)
+
+def results(request):
+    """Відобразити отримані результати."""
+    with open (f'filename.json') as f:
+        results = json.load(f)
+    context = {'results': results}
+    return render(request, 'movierating/results.html', context)

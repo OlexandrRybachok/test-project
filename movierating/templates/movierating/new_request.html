@@ -2,7 +2,11 @@
 
 {% block content %}
 
-	<p>Result</p>
-	{{ response }}
+	<p>Do your request</p>
+  <form action="{% url 'movierating:new_request' %}" method='post'>
+    {% csrf_token %}
+	  {{ form }}
+    <button name="submit">Make request</button>
+  </form>
 
 {% endblock content %}
