@@ -8,13 +8,20 @@ def index(request):
     return render(request, 'movierating/index.html')
 
 def new_request(request):
-    """Відображення форми для здійснення запиту."""
+    """Відображення форми та здійснення запиту."""
     if request.method == 'POST':
         form = MovieForm(data=request.POST)
         data = form['title'].value()
-        response = requests.get(f'https://www.omdbapi.com/?r=json&s={data}&apikey=36cd6ae').json()
-        with open(f'filename.json', 'w') as f:
-            json.dump(response, f)
+        page = 1
+        active = True
+        while active:
+            response = requests.get(f'https://www.omdbapi.com/?r=json&s={data}&page={page}&apikey=36cd6ae').json()
+            page += 1
+            with open('filename.json', 'a') as f:
+                json.dump(response, f)
+            if response['Response'] == 'False':
+                break
+            
         return redirect('movierating:results')
     else:
         form = MovieForm()
@@ -23,7 +30,7 @@ def new_request(request):
 
 def results(request):
     """Відобразити отримані результати."""
-    with open (f'filename.json') as f:
-        results = json.load(f)
-    context = {'results': results}
+    with open ('filename.json') as f:
+        result = json.load(f)
+    context = {'result': result}
     return render(request, 'movierating/results.html', context)
