@@ -5,5 +5,5 @@ from .models import Movie
 class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
-        fields = ['title']
-        labels = {'title': ''}
+        fields = ['title', 'year']
+        labels = {'title': '', 'year': ''}

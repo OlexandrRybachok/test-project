@@ -12,16 +12,17 @@ def new_request(request):
     if request.method == 'POST':
         form = MovieForm(data=request.POST)
         data = form['title'].value()
+        year = form['year'].value()
+        responses = []
         page = 1
         active = True
         while active:
-            response = requests.get(f'https://www.omdbapi.com/?r=json&s={data}&page={page}&apikey=36cd6ae').json()
+            response = requests.get(f'https://www.omdbapi.com/?r=json&s={data}&page={page}&y={year}&apikey=36cd6ae').json()
             page += 1
-            with open('filename.json', 'a') as f:
-                json.dump(response, f)
+            responses.append(response)
             if response['Response'] == 'False':
                 break
-            
+        request.session['responses'] = responses
         return redirect('movierating:results')
     else:
         form = MovieForm()
@@ -30,7 +31,6 @@ def new_request(request):
 
 def results(request):
     """Відобразити отримані результати."""
-    with open ('filename.json') as f:
-        result = json.load(f)
+    result = request.session['responses']
     context = {'result': result}
     return render(request, 'movierating/results.html', context)
